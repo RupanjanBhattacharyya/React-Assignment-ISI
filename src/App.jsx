@@ -27,12 +27,12 @@ function App() {
             <Route path="/login">
               <LoginForm setIsAuthenticated={setIsAuthenticated} showError={updateErrorMessage} updateTitle={updateTitle}/>
             </Route>
-            <Route path="/home"
-              element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <LoginForm setIsAuthenticated={setIsAuthenticated} />}
-            />
             <Route path="/home">
               <Home showError={updateErrorMessage} updateTitle={updateTitle}/>
             </Route>
+            <Route path="/home"
+              element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <LoginForm setIsAuthenticated={setIsAuthenticated} />}
+            />
           </Switch>
           <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage}/>
         </div>
