@@ -22,6 +22,7 @@ function Header(props) {
     function handleLogout() {
         localStorage.removeItem(ACCESS_TOKEN_NAME)
         props.history.push('/login')
+        props.updateTitle('Login')
     }
     return(
         <nav className="navbar navbar-dark bg-primary">
