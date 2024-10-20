@@ -13,9 +13,7 @@ function Header(props) {
     function renderLogout() {
         if(props.location.pathname === '/home'){
             return(
-                <div className="ml-auto">
-                    <button className="btn btn-danger" onClick={() => handleLogout()}>Logout</button>
-                </div>
+                <button className="btn btn-danger" onClick={() => handleLogout()}>Logout</button>
             )
         }
     }
@@ -26,9 +24,14 @@ function Header(props) {
     }
     return(
         <nav className="navbar navbar-dark bg-primary">
-            <div className="row col-12 d-flex justify-content-center text-white">
-                <span className="h3">{props.title || title}</span>
-                {renderLogout()}
+            <div className="container-fluid">
+                <div className="navbar-brand invisible">Placeholder</div>
+                <span className="navbar-brand mb-0 h3 position-absolute justify-content-center start-50 translate-middle-x text-white">
+                    {props.title || title}
+                </span>
+                <div className="ml-auto">
+                    {renderLogout()}
+                </div>
             </div>
         </nav>
     )
