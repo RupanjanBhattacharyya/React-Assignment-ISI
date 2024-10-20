@@ -15,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-      <Header title={title}/>
+      <Header title={title} updateTitle={updateTitle}/>
         <div className="container d-flex align-items-center flex-column">
           <Switch>
             <Route path="/" exact={true}>
