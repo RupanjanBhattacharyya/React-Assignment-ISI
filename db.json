@@ -4,31 +4,28 @@
       "id": "b5f5",
       "email": "quest4knowledge1035@gmail.com",
       "password": "Plank@6626",
-      "name": "Rupanjan"
+      "name": "Rupanjan",
+      "phone": "9474975952"
     },
     {
       "id": "79c8",
       "email": "quest4knowledge1035@gmail.com",
       "password": "Plank@6626",
-      "name": "Rupartemis"
+      "name": "Rupartemis",
+      "phone": "9474145879"
     },
     {
-      "id": "acf4",
+      "id": "b024",
+      "name": "Rupanjan ",
       "email": "quest4knowledge1035@gmail.com",
-      "password": "Plank@6626",
-      "name": "Rupanjan Bhattacharyya "
+      "phone": "9474145879"
     },
     {
-      "id": "e640",
-      "email": "2023eeb0106.rupanjan@students.iiests.ac.in",
+      "id": "2862",
+      "email": "quest4knowledge1035@gmail.com",
+      "phone": "9474145879",
       "password": "Plank@6626",
       "name": "Rup"
-    },
-    {
-      "id": "d71b",
-      "email": "quest4knowledge1035@gmail.com",
-      "password": "Plank@6626",
-      "name": "Batman"
     }
   ],
   "tokens": []

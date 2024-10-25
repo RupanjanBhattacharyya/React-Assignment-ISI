@@ -1,27 +1,35 @@
 import React from 'react';
-import { withRouter } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ACCESS_TOKEN_NAME } from '../../constants/apiConstants';
+
 function Header(props) {
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const capitalize = (s) => {
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
-    let title = capitalize(props.location.pathname.substring(1,props.location.pathname.length))
-    if(props.location.pathname === '/') {
+
+    let title = capitalize(location.pathname.substring(1, location.pathname.length))
+    if(location.pathname === '/') {
         title = 'Welcome'
     }
+
     function renderLogout() {
-        if(props.location.pathname === '/home'){
+        if(location.pathname === '/home'){
             return(
                 <button className="btn btn-danger" onClick={() => handleLogout()}>Logout</button>
             )
         }
     }
+
     function handleLogout() {
         localStorage.removeItem(ACCESS_TOKEN_NAME)
-        props.history.push('/login')
+        navigate('/login')
         props.updateTitle('Login')
     }
+
     return(
         <nav className="navbar navbar-dark bg-primary">
             <div className="container-fluid">
@@ -36,4 +44,5 @@ function Header(props) {
         </nav>
     )
 }
-export default withRouter(Header);
+
+export default Header;
