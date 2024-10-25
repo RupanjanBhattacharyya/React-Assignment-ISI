@@ -18,6 +18,7 @@ function AlertComponent(props) {
     });
     
     return(
+        <div className="container d-flex align-items-center flex-column">
         <div 
             className={"alert alert-danger alert-dismissable mt-4"} 
             role="alert" 
@@ -30,7 +31,7 @@ function AlertComponent(props) {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
+            </div>
         </div>
     )
 } 
