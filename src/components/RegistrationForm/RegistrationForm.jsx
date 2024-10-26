@@ -3,6 +3,7 @@ import axios from 'axios';
 import './RegistrationForm.css';
 import { API_BASE_URL, ACCESS_TOKEN_NAME } from '../../constants/apiConstants';
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from 'lucide-react';
 
 function RegistrationForm(props) {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ function RegistrationForm(props) {
         userName: "",
         successMessage: null
     })
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         const { id, value } = e.target
@@ -78,80 +80,116 @@ function RegistrationForm(props) {
         }
     }
 
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
-        <div className="content-wrapper">
-            <div className="content-container">
-                <div className="card col-12 col-lg-4 login-card mt-2 hv-center">
-                    <form>
-                        <div className="form-group text-left">
-                            <div className="form-group text-left">
-                                <div className="form-group text-left">  
-                                <label htmlFor="exampleInputPassword1" className="mt-3" >User Name</label>
-                                <input type="text"
-                                    className="form-control"
-                                    id="userName"
-                                    placeholder="Add User Name"
-                                    value={state.userName}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <label htmlFor="exampleInputEmail1" className="mt-3" >Email address</label>
-                            <input type="email"
-                                className="form-control"
-                                id="email"
-                                aria-describedby="emailHelp"
-                                placeholder="Enter email"
-                                value={state.email}
+        <div class="wrapper">
+            <div class="text-center mt-4 name">
+                Authenticator
+            </div>
+            <form class="p-3 mt-3">
+            <style>{`
+                input:-webkit-autofill,
+                input:-webkit-autofill:hover,
+                input:-webkit-autofill:focus {
+                    transition: background-color 0s 50000s;
+                    -webkit-text-fill-color: inherit !important;
+                }
+
+                .password-toggle {
+                    outline: none;
+                    border: none;
+                    background: none;
+                }
+
+                .password-toggle:focus {
+                    outline: none;
+                }
+            `}</style>
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span>
+                    <input type="text"
+                                id="userName"
+                                placeholder="Add User Name"
+                                value={state.userName}
                                 onChange={handleChange}
+                                autocomplete="username"
                             />
-                            <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <label htmlFor="exampleInputPhone1" className="mt-2" >Phone Number</label>
-                            <input type="phone"
-                                className="form-control"
-                                id="phone"
-                                placeholder="Enter phone number"
-                                value={state.phone}
-                                onChange={handleChange}
-                            />
-                            <small id="emailHelp" className="form-text text-muted">We'll never share your phone number with anyone else.</small>
-                        </div>
-                        <div className="form-group text-left">
-                            <label htmlFor="exampleInputPassword1" className="mt-2" >Password</label>
-                            <input type="password"
-                                className="form-control"
-                                id="password"
-                                placeholder="Password"
-                                value={state.password}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group text-left">
-                            <label htmlFor="exampleInputPassword1" className="mt-3" >Confirm Password</label>
-                            <input type="password"
-                                className="form-control"
-                                id="confirmPassword"
-                                placeholder="Confirm Password"
-                                value={state.confirmPassword}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary m-3"
-                            onClick={handleSubmitClick}
-                        >
-                            Register
-                        </button>
-                    </form>
-                    <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
-                        {state.successMessage}
-                    </div>
-                    <div className="mb-3">
-                        <span>Already have an account? </span>
-                        <span className="loginText" onClick={() => redirectToLogin()}>Login here</span>
-                    </div>
+                    
                 </div>
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span>
+                    <input type="email"
+                                        id="email"
+                                        aria-describedby="emailHelp"
+                                        placeholder="Enter Email"
+                                        value={state.email}
+                                        onChange={handleChange}
+                                        autocomplete="email"
+                                    />
+                    
+                </div>
+                <div class="form-field d-flex align-items-center">
+                    <span class="far fa-user"></span>
+                    <input type="tel"
+                                    id="phone"
+                                    placeholder="Enter Phone Number"
+                                    value={state.phone}
+                                    onChange={handleChange}
+                                    autocomplete="tel"
+                                    />
+                    
+                </div>        
+                <div class="form-field d-flex align-items-center">
+                    <span class="fas fa-key"></span>
+                                    <input type={showPassword ? "text" : "password"}                                      
+                                        id="password"
+                                        placeholder="Password"
+                                        value={state.password}
+                                        onChange={handleChange}
+                                        autocomplete="new-password"
+                                    />
+                                    <button
+                                    type="button"
+                                    className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer m-2"
+                                    onClick={togglePassword}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>                
+                </div>
+                <div class="form-field d-flex align-items-center">
+                    <span class="fas fa-key"></span>
+                                    <input type={showPassword ? "text" : "password"}                                      
+                                        id="confirmPassword"
+                                        placeholder="Confirm Password"
+                                        value={state.password}
+                                        onChange={handleChange}
+                                        autocomplete="new-password"
+                                    />
+                                    <button
+                                    type="button"
+                                    className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer m-2"
+                                    onClick={togglePassword}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>                
+                </div>
+                <button class="btn mt-3"
+                        type="submit"
+                        onClick={handleSubmitClick}
+                        >Register
+                </button>
+            </form>
+            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
+                {state.successMessage}
+            </div>
+            <div className="mb-3">
+                <span>Already have an account? </span>
+                <span className="loginText" onClick={() => redirectToLogin()}>Login here</span>
             </div>
         </div>
     )

@@ -68,8 +68,8 @@ function Create() {
               onChange={(e) => setUser({ ...User, phone: e.target.value })}
             />
           </div>
-          <button className="btn btn-success">Create</button>
-          <Link to="/home" className="btn btn-primary ms-3">
+          <button className="btn btn-success m-2">Create</button>
+          <Link to="/home" className="btn btn-primary m-3">
             Back
           </Link>
         </form>
