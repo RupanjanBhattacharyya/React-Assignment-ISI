@@ -50,7 +50,7 @@ function LoginForm(props) {
                     redirectToHome();
                     props.showError(null)
                 } else {
-                    props.showError("Username and password do not match");
+                    props.showError("Email or password is invalid");
                 }
             })
             .catch(function (error) {
