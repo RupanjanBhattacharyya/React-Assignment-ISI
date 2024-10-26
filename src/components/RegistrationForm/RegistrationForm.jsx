@@ -50,7 +50,7 @@ function RegistrationForm(props) {
                         ...prevState,
                         'successMessage': 'Registration successful. Redirecting to home page..'
                     }))
-                    redirectToHome();
+                    redirectToLogin();
                     props.showError(null)
                 })
                 .catch(function (error) {
@@ -59,11 +59,6 @@ function RegistrationForm(props) {
         } else {
             props.showError('Please enter valid username and password')
         }
-    }
-
-    const redirectToHome = () => {
-        props.updateTitle('Home')
-        navigate('/home');
     }
 
     const redirectToLogin = () => {
@@ -148,8 +143,7 @@ function RegistrationForm(props) {
                                         id="password"
                                         placeholder="Password"
                                         value={state.password}
-                                        onChange={handleChange}
-                                        autocomplete="new-password"
+                                        onChange={handleChange}                                        
                                     />
                                     <button
                                     type="button"
@@ -165,9 +159,8 @@ function RegistrationForm(props) {
                                     <input type={showPassword ? "text" : "password"}                                      
                                         id="confirmPassword"
                                         placeholder="Confirm Password"
-                                        value={state.password}
-                                        onChange={handleChange}
-                                        autocomplete="new-password"
+                                        value={state.confirmPassword}
+                                        onChange={handleChange}                                        
                                     />
                                     <button
                                     type="button"
