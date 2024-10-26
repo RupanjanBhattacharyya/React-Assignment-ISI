@@ -14,9 +14,14 @@ function Create() {
 
   const AddUser = (e) => {
     e.preventDefault();
-
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+      }
+    };
     axios
-      .post(`${API_BASE_URL}/users`, User)
+      .post(`${API_BASE_URL}/users`, User,config)
       .then((res) => {
         console.log(res);
         navigate("/");

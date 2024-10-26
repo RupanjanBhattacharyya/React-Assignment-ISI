@@ -32,7 +32,14 @@ function RegistrationForm(props) {
                 "password": state.password,
                 "name": state.userName
             }
-            axios.post(`${API_BASE_URL}/users`, payload)
+            // Add CORS headers to the request
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+                }
+            };
+            axios.post(`${API_BASE_URL}/users`, payload,config)
                 .then(function (response) {
                     // Simulate token generation
                     const token = "dummy-token"; // Replace with actual logic if needed

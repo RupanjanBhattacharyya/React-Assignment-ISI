@@ -6,8 +6,14 @@ function Update() {
   const [User, setUser] = useState({});
   const { id } = useParams();
   useEffect(() => {
+      const config = {
+          headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+          }
+      };
       axios
-        .get(`${API_BASE_URL}/users/${id}`)
+        .get(`${API_BASE_URL}/users/${id}`,config)
         .then((res) => {
           setUser(res.data);
         })
@@ -16,7 +22,13 @@ function Update() {
   const navigate = useNavigate();
   const UpdateUser = (e) => {
     e.preventDefault();
-    axios.put(`${API_BASE_URL}/users/${id}`, User)
+    const config = {
+      headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+      }
+    };
+    axios.put(`${API_BASE_URL}/users/${id}`, User, config)
     .then((res) => {
         navigate("/home");
       })
