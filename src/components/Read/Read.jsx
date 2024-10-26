@@ -57,8 +57,8 @@ function Read() {
   }
 
   return (
-    <div className="d-flex w-100 vh-100 justify-content-center align-items-center bg-light">
-      <div className="w-50 border bg-white shadow px-5 pt-3 pb-5 rounded">
+    <div className="d-flex w-100 vh-100 justify-content-center align-items-center bg-white m-5">
+      <div className="w-50 border bg-white shadow px-5 pt-3 pb-5 rounded" style={{ minWidth: '500px' }}>
         <h1>Detail of User</h1>
         <div className="mb-2">
           <strong>Name: </strong>
@@ -73,10 +73,10 @@ function Read() {
           <span>{dataUser.phone || 'N/A'}</span>
         </div>
         <div className="mt-3">
-          <Link to={`/update/${id}`} className="btn btn-success">
+          <Link to={`/update/${id}`} className="btn btn-success m-2">
             Update
           </Link>
-          <Link to="/home" className="btn btn-primary ms-3">
+          <Link to="/home" className="btn btn-primary m-2">
             Back
           </Link>
         </div>

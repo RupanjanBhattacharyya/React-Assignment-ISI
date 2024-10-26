@@ -70,8 +70,8 @@ function Update() {
             />
           </div>
 
-          <button className="btn btn-success">Update</button>
-          <Link to="/home" className="btn btn-primary ms-3">
+          <button className="btn btn-success m-2">Update</button>
+          <Link to="/home" className="btn btn-primary m-2">
             Back
           </Link>
         </form>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import { API_BASE_URL } from '../../constants/apiConstants';
+import { Users } from 'lucide-react';
 
 function Home(props) {
   const [dataUser, setDataUser] = useState([]);
@@ -78,19 +79,19 @@ function Home(props) {
         <td>
           <Link
             to={`/read/${user.id}`}
-            className="btn btn-sm btn-info me-2"
+            className="btn btn-sm btn-info m-2"
           >
             Read
           </Link>
           <Link
             to={`/update/${user.id}`}
-            className="btn btn-sm btn-primary me-2"
+            className="btn btn-sm btn-primary m-2"
           >
             Edit
           </Link>
           <button
             onClick={() => handleDelete(user.id)}
-            className="btn btn-sm btn-danger"
+            className="btn btn-sm btn-danger m-2"
           >
             Delete
           </button>
@@ -110,37 +111,44 @@ function Home(props) {
   }
 
   return (
-    <div className="d-flex flex-column justify-content-center align-items-center bg-light vh-100">
-      <h1>List of Users</h1>
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
+    <div className="d-flex flex-column justify-content-center align-items-center g-gray-100 min-h-screen p-6">
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center gap-3 mb-3">
+          <Users size={40} className="text-blue-600 m-2" />
+          <h1 className="m-0 font-bold text-3xl text-gray-800">
+            List of Users
+          </h1>
         </div>
-      )}
+        <div className="h-1 w-24 bg-blue-600 mx-auto rounded-full"></div>
+      </div>
       <div className="w-75 rounded bg-white border shadow p-4">
-        <div className="d-flex justify-content-end">
-          <Link to="/create" className="btn btn-success">
-            Add+
-          </Link>
+        <div className="table-responsive" >
+          <div style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
+            <div className="d-flex justify-content-end mb-3">
+              <Link to="/create" className="btn btn-success">
+                Add+
+              </Link>
+            </div>
+            {!Array.isArray(dataUser) || dataUser.length === 0 ? (
+              <div className="alert alert-info mt-3">No users found</div>
+            ) : (
+              <table className="table table-striped" style={{ minWidth: '750px' }}>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataUser.map(renderUserRow)}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
-        {!Array.isArray(dataUser) || dataUser.length === 0 ? (
-          <div className="alert alert-info mt-3">No users found</div>
-        ) : (
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataUser.map(renderUserRow)}
-            </tbody>
-          </table>
-        )}
       </div>
     </div>
   );
