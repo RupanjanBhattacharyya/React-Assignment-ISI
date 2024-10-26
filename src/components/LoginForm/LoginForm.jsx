@@ -22,12 +22,26 @@ function LoginForm(props) {
 
     const handleSubmitClick = (e) => {
         e.preventDefault();
-        axios.get(`${API_BASE_URL}/users?email=${state.email}&password=${state.password}`)
+        
+        // Remove any trailing slashes from the base URL
+        const baseUrl = API_BASE_URL.replace(/\/+$/, '');
+        
+        // Add https protocol if not present (ngrok uses https by default)
+        const fullUrl = baseUrl.startsWith('http') ? baseUrl : `https://${baseUrl}`;
+        
+        // Add CORS headers to the request
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+            }
+        };
+    
+        axios.get(`${fullUrl}/users?email=${encodeURIComponent(state.email)}&password=${encodeURIComponent(state.password)}`, config)
             .then(function (response) {
                 if (response.data.length > 0) {
                     const token = "dummy-token"; // Simulate token generation
                     localStorage.setItem(ACCESS_TOKEN_NAME, token);
-                    // Continue with success message and redirection...
                     setState(prevState => ({
                         ...prevState,
                         'successMessage': 'Login successful. Redirecting to home page..'
@@ -38,9 +52,19 @@ function LoginForm(props) {
                 } else {
                     props.showError("Username and password do not match");
                 }
+            })
+            .catch(function (error) {
+                // Handle ngrok-specific errors
+                if (error.response) {
+                    props.showError(`Server error: ${error.response.status}`);
+                } else if (error.request) {
+                    props.showError("Unable to reach the server. Please check your ngrok connection.");
+                } else {
+                    props.showError("An error occurred during login.");
+                }
             });
     }
-
+    
     const redirectToHome = () => {
         props.updateTitle('Home')
         navigate('/home');

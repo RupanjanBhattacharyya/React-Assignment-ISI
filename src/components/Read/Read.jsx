@@ -14,7 +14,13 @@ function Read() {
       try {
         setLoading(true);
         // Fix: Add forward slash between base URL and ID
-        const response = await axios.get(`${API_BASE_URL}/users/${id}`);
+        const config = {
+          headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+          }
+        };
+        const response = await axios.get(`${API_BASE_URL}/users/${id}`,config);
         setDataUser(response.data);
         setError(null);
       } catch (err) {
