@@ -1,13 +1,6 @@
 {
   "users": [
     {
-      "id": "b5f5",
-      "email": "quest4knowledge1035@gmail.com",
-      "password": "Plank@6626",
-      "name": "Rupanjan",
-      "phone": "9474975952"
-    },
-    {
       "id": "79c8",
       "email": "quest4knowledge1035@gmail.com",
       "password": "Plank@6626",
@@ -53,6 +46,12 @@
       "name": "Damn",
       "email": "quest4knowledge1035@gmail.com",
       "phone": "9474145879"
+    },
+    {
+      "name": "Goru",
+      "email": "quest4knowledge1035@gmail.com",
+      "phone": "09474145879",
+      "id": "GPNLPKI"
     }
   ],
   "tokens": []

@@ -24,7 +24,7 @@ function Create() {
       .post(`${API_BASE_URL}/users`, User,config)
       .then((res) => {
         console.log(res);
-        navigate("/");
+        navigate("/home");
       })
       .catch((err) => console.log(err));
   };
