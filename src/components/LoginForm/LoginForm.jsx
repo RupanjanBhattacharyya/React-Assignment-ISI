@@ -10,7 +10,7 @@ function LoginForm(props) {
     const [state, setState] = useState({
         email: "",
         password: "",
-        successMessage: null
+        successMessage: ""
     })
     const [showPassword, setShowPassword] = useState(false);
 
@@ -46,11 +46,15 @@ function LoginForm(props) {
                     localStorage.setItem(ACCESS_TOKEN_NAME, token);
                     setState(prevState => ({
                         ...prevState,
-                        'successMessage': 'Login successful. Redirecting to home page..'
-                    }))
+                        successMessage: 'Login successful. Redirecting to home page..'
+                    }));
                     props.setIsAuthenticated(true);
-                    redirectToHome();
-                    props.showError(null)
+                    props.showError(null);
+                    
+                    // Set timeout for 3 seconds before redirecting
+                    setTimeout(() => {
+                        redirectToHome();
+                    }, 3000);
                 } else {
                     props.showError("Email or password is invalid");
                 }
@@ -86,6 +90,9 @@ function LoginForm(props) {
             <div class="text-center mt-4 name">
                 Authenticator
             </div>
+            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
+                {state.successMessage}
+            </div>
             <form class="p-3 mt-3">
             <style>{`
                 input:-webkit-autofill,
@@ -99,6 +106,8 @@ function LoginForm(props) {
                     outline: none;
                     border: none;
                     background: none;
+                    position: relative;
+                    right: 20px;
                 }
 
                 .password-toggle:focus {
@@ -128,7 +137,7 @@ function LoginForm(props) {
                                     />
                                     <button
                                     type="button"
-                                    className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer m-2"
+                                    className="password-toggle"
                                     onClick={togglePassword}
                                     aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
@@ -141,9 +150,7 @@ function LoginForm(props) {
                         >Login
                 </button>
             </form>
-            <div className="alert alert-success mt-2" style={{ display: state.successMessage ? 'block' : 'none' }} role="alert">
-                {state.successMessage}
-            </div>
+            
             <div className="registerMessage">
                 <span>Don't have an account? </span>
                 <span className="loginText" onClick={() => redirectToRegister()}>Register</span>
@@ -152,5 +159,4 @@ function LoginForm(props) {
     
     )
 }
-
 export default LoginForm;

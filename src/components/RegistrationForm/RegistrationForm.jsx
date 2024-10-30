@@ -170,6 +170,8 @@ function RegistrationForm(props) {
                     outline: none;
                     border: none;
                     background: none;
+                    position: relative;
+                    right: 20px;
                 }
 
                 .password-toggle:focus {
@@ -242,8 +244,8 @@ function RegistrationForm(props) {
                     required
                 />
                 <button
-                    type="button"
-                    className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer m-2"
+                     type="button"
+                     className="password-toggle"
                     onClick={togglePassword}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                 >
@@ -266,9 +268,9 @@ function RegistrationForm(props) {
                     onChange={handleChange}
                     required
                 />
-                <button
+                 <button
                     type="button"
-                    className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer m-2"
+                    className="password-toggle"
                     onClick={togglePassword}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                 >
