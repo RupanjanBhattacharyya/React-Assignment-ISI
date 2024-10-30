@@ -19,6 +19,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Header title={title} updateTitle={updateTitle} />
+        <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage} />
             <Routes>
               <Route 
                 path="/" 
@@ -56,11 +57,7 @@ function App() {
                   )
                 } 
               />
-              <Route path="/create" element={<Create />} />
-              <Route path="/update/:id" element={<Update />} />
-              <Route path="/read/:id" element={<Read />} />
             </Routes>
-            <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage} />
           </div>
     </BrowserRouter>
   );
