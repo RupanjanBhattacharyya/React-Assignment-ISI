@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import axios from "axios";
 import { API_BASE_URL } from '../../constants/apiConstants';
 import { Users } from 'lucide-react';
+import { CreateUserModal, ReadUserModal, UpdateUserModal } from '../CrudModals/CrudModals';
+import { Button } from "@/components/ui/button";
 
 function Home(props) {
   const [dataUser, setDataUser] = useState([]);
@@ -10,24 +11,20 @@ function Home(props) {
   const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
-     // Add CORS headers to the request
-     const config = {
+    const config = {
       headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
       }
-  };
+    };
     try {
-      const response = await axios.get(`${API_BASE_URL}/users`,config);
+      const response = await axios.get(`${API_BASE_URL}/users`, config);
       console.log('API Response:', response.data);
       
-      // Ensure we're working with an array
       if (!Array.isArray(response.data)) {
-        // If response.data is an object with a users property
         if (response.data.users && Array.isArray(response.data.users)) {
           setDataUser(response.data.users);
         } else {
-          // If it's a single user object, wrap it in an array
           setDataUser(response.data ? [response.data] : []);
         }
       } else {
@@ -53,11 +50,11 @@ function Home(props) {
       try {
         const config = {
           headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': 'true' // Bypass ngrok browser warning
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
           }
         };
-        await axios.delete(`${API_BASE_URL}/users/${id}`,config);
+        await axios.delete(`${API_BASE_URL}/users/${id}`, config);
         await fetchUsers();
       } catch (err) {
         setError('Error deleting user: ' + err.message);
@@ -66,7 +63,6 @@ function Home(props) {
     }
   };
 
-  // Safe rendering with data validation
   const renderUserRow = (user) => {
     if (!user || typeof user !== 'object') return null;
     
@@ -77,24 +73,30 @@ function Home(props) {
         <td>{user.email || 'N/A'}</td>
         <td>{user.phone || 'N/A'}</td>
         <td>
-          <Link
-            to={`/read/${user.id}`}
-            className="btn btn-sm btn-info m-2"
-          >
-            Read
-          </Link>
-          <Link
-            to={`/update/${user.id}`}
-            className="btn btn-sm btn-primary m-2"
-          >
-            Edit
-          </Link>
-          <button
-            onClick={() => handleDelete(user.id)}
+          <ReadUserModal
+            userId={user.id}
+            trigger={
+              <Button variant="outline" className="btn btn-sm btn-info m-2">
+                Read
+              </Button>
+            }
+          />
+          <UpdateUserModal
+            userId={user.id}
+            onSuccess={fetchUsers}
+            trigger={
+              <Button variant="outline" className="btn btn-sm btn-primary m-2">
+                Edit
+              </Button>
+            }
+          />
+          <Button
+            variant="outline"
             className="btn btn-sm btn-danger m-2"
+            onClick={() => handleDelete(user.id)}
           >
             Delete
-          </button>
+          </Button>
         </td>
       </tr>
     );
@@ -119,15 +121,12 @@ function Home(props) {
             List of Users
           </h1>
         </div>
-        <div className="h-1 w-24 bg-blue-600 mx-auto rounded-full"></div>
       </div>
       <div className="w-75 rounded bg-white border shadow p-4">
-        <div className="table-responsive" >
+        <div className="table-responsive">
           <div style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
             <div className="d-flex justify-content-end mb-3">
-              <Link to="/create" className="btn btn-success">
-                Add+
-              </Link>
+              <CreateUserModal onSuccess={fetchUsers} />
             </div>
             {!Array.isArray(dataUser) || dataUser.length === 0 ? (
               <div className="alert alert-info mt-3">No users found</div>
