@@ -150,7 +150,6 @@ function LoginForm(props) {
                         >Login
                 </button>
             </form>
-            
             <div className="registerMessage">
                 <span>Don't have an account? </span>
                 <span className="loginText" onClick={() => redirectToRegister()}>Register</span>
