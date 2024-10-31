@@ -11,13 +11,16 @@ export const CreateUserModal = ({ onSuccess }) => {
     name: "",
     email: "",
     phone: "",
+    profilePicture: null
   });
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     phone: "",
+    profilePicture: ""
   });
   const [open, setOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -26,10 +29,11 @@ export const CreateUserModal = ({ onSuccess }) => {
       name: "",
       email: "",
       phone: "",
+      profilePicture: ""
     };
 
     // Name validation
-    if (User.name.length  < 3) {
+    if (User.name.length < 3) {
       newErrors.name = "Username must be at least 3 characters long";
       valid = false;
     }
@@ -58,26 +62,62 @@ export const CreateUserModal = ({ onSuccess }) => {
     return valid;
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 512000) { // 500KB in bytes
+        setErrors({
+          ...errors,
+          profilePicture: "Image size must be less than 500KB"
+        });
+        e.target.value = null;
+        return;
+      }
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        setUser({ ...User, profilePicture: reader.result }); // Store base64 string
+      };
+      reader.readAsDataURL(file);
+      setErrors({ ...errors, profilePicture: "" });
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      setImagePreview(null);
+    }
+  }, [open]);
+
   const AddUser = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
     const config = {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'true'
       }
     };
+  
+    // Send the User object directly since it now contains the base64 image
     axios
-      .post(`${API_BASE_URL}/users`, User, config)
-      .then((res) => {
-        console.log(res);
-        setOpen(false);
-        if (onSuccess) onSuccess();
-      })
-      .catch((err) => console.log(err));
-  };
-
+    .post(`${API_BASE_URL}/users`, User, config)
+    .then((res) => {
+      console.log(res);
+      setOpen(false);
+      setImagePreview(null); // Reset image preview
+      setUser({             // Reset form
+        name: "",
+        email: "",
+        phone: "",
+        profilePicture: null
+      });
+      if (onSuccess) onSuccess();
+    })
+    .catch((err) => console.log(err));
+};
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -133,6 +173,23 @@ export const CreateUserModal = ({ onSuccess }) => {
                 }}
               />
               {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+            </div>
+            <div className="mb-2">
+              <label htmlFor="profilePicture">Profile Picture:</label>
+              <input
+                type="file"
+                name="profilePicture"
+                accept="image/*"
+                className={`form-control ${errors.profilePicture ? 'border-red-500' : ''}`}
+                onChange={handleImageChange}
+              />
+              {errors.profilePicture && <p className="text-red-500 text-sm mt-1">{errors.profilePicture}</p>}
+              {imagePreview && (
+                <div className="mt-2">
+                  <img src={imagePreview} alt="Preview" className="w-24 h-24 object-cover rounded" />
+                </div>
+              )}
+              <p className="text-sm text-gray-500 mt-1">Maximum file size: 500KB</p>
             </div>
             <div className="flex justify-end gap-2">
               <Button type="submit" className="btn btn-success m-2">Create</Button>
@@ -201,6 +258,15 @@ export const ReadUserModal = ({ userId, trigger }) => {
             </div>
           ) : (
             <>
+              {dataUser.profilePicture && (
+                <div className="mb-4 flex justify-center">
+                  <img 
+                    src={dataUser.profilePicture} 
+                    alt="Profile" 
+                    className="w-32 h-32 object-cover rounded-full"
+                  />
+                </div>
+              )}
               <div className="mb-2">
                 <strong>Name: </strong>
                 <span>{dataUser.name || 'N/A'}</span>
@@ -233,22 +299,27 @@ export const UpdateUserModal = ({ userId, trigger, onSuccess }) => {
     name: "",
     email: "",
     phone: "",
+    profilePicture: ""
   });
   const [open, setOpen] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (open && userId) {
       const config = {
         headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'ngrok-skip-browser-warning': 'true',
+          'Content-Type': 'application/json, multipart/form-data', 
         }
       };
       axios
         .get(`${API_BASE_URL}/users/${userId}`, config)
         .then((res) => {
           setUser(res.data);
+          if (res.data.profilePicture) {
+            setImagePreview(res.data.profilePicture);
+          }
         })
         .catch((err) => console.log(err));
     }
@@ -260,6 +331,7 @@ export const UpdateUserModal = ({ userId, trigger, onSuccess }) => {
       name: "",
       email: "",
       phone: "",
+      profilePicture: ""
     };
 
     // Name validation
@@ -292,6 +364,35 @@ export const UpdateUserModal = ({ userId, trigger, onSuccess }) => {
     return valid;
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 512000) { // 500KB in bytes
+        setErrors({
+          ...errors,
+          profilePicture: "Image size must be less than 500KB"
+        });
+        e.target.value = null;
+        return;
+      }
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        setUser({ ...User, profilePicture: reader.result }); // Store base64 string
+      };
+      reader.readAsDataURL(file);
+      setErrors({ ...errors, profilePicture: "" });
+    }
+  };
+
+  useEffect(() => {
+    if (!open) {
+      setImagePreview(null);
+    }
+  }, [open]);
+
+  // Modify the UpdateUser function
   const UpdateUser = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -302,13 +403,16 @@ export const UpdateUserModal = ({ userId, trigger, onSuccess }) => {
         'ngrok-skip-browser-warning': 'true'
       }
     };
+
+    // Send the User object directly since it now contains the base64 image
     axios.put(`${API_BASE_URL}/users/${userId}`, User, config)
-      .then((res) => {
-        setOpen(false);
-        if (onSuccess) onSuccess();
-      })
-      .catch((err) => console.log(err));
-  };
+    .then((res) => {
+      setOpen(false);
+      setImagePreview(null); // Reset image preview
+      if (onSuccess) onSuccess();
+    })
+    .catch((err) => console.log(err));
+};
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -365,6 +469,23 @@ export const UpdateUserModal = ({ userId, trigger, onSuccess }) => {
                 }}
               />
               {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+            </div>
+            <div className="mb-2">
+              <label htmlFor="profilePicture">Profile Picture:</label>
+              <input
+                type="file"
+                name="profilePicture"
+                accept="image/*"
+                className={`form-control ${errors.profilePicture ? 'border-red-500' : ''}`}
+                onChange={handleImageChange}
+              />
+              {errors.profilePicture && <p className="text-red-500 text-sm mt-1">{errors.profilePicture}</p>}
+              {imagePreview && (
+                <div className="mt-2">
+                  <img src={imagePreview} alt="Preview" className="w-24 h-24 object-cover rounded" />
+                </div>
+              )}
+              <p className="text-sm text-gray-500 mt-1">Maximum file size: 500KB</p>
             </div>
             <div className="flex justify-end gap-2">
               <Button type="submit" className="btn btn-success m-2">Update</Button>
