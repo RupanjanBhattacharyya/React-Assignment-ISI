@@ -8,7 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 function LoginForm(props) {
     const navigate = useNavigate();
     const [state, setState] = useState({
-        email: "",
+        name: "",
         password: "",
         successMessage: ""
     })
@@ -39,7 +39,7 @@ function LoginForm(props) {
             }
         };
     
-        axios.get(`${fullUrl}/users?email=${encodeURIComponent(state.email)}&password=${encodeURIComponent(state.password)}`, config)
+        axios.get(`${fullUrl}/users?name=${encodeURIComponent(state.name)}&password=${encodeURIComponent(state.password)}`, config)
             .then(function (response) {
                 if (response.data.length > 0) {
                     const token = "dummy-token"; // Simulate token generation
@@ -56,7 +56,7 @@ function LoginForm(props) {
                         redirectToHome();
                     }, 3000);
                 } else {
-                    props.showError("Email or password is invalid");
+                    props.showError("User name or password is invalid");
                 }
             })
             .catch(function (error) {
@@ -115,15 +115,15 @@ function LoginForm(props) {
                 }
             `}</style>
                 <div class="form-field d-flex align-items-center">
-                    <span class="far fa-user"></span>
-                    <input type="email"
-                                        id="email"
-                                        aria-describedby="emailHelp"
-                                        placeholder="Enter email"
-                                        value={state.email}
-                                        onChange={handleChange}
-                                        autocomplete="email"
-                                    />
+                <span class="far fa-user"></span>
+                <input type="text"
+                    id="name"
+                    placeholder="Enter User Name"
+                    value={state.name}
+                    onChange={handleChange}
+                    autocomplete="off"
+                    required
+                />
                     
                 </div>
                 <div class="form-field d-flex align-items-center">
