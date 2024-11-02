@@ -6,9 +6,6 @@ import LoginForm from './components/LoginForm/LoginForm';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import Home from './components/Home/Home';
 import AlertComponent from './components/AlertComponent/AlertComponent';
-import Create from "./components/Create/Create";
-import Update from "./components/Update/Update";
-import Read from "./components/Read/Read";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
