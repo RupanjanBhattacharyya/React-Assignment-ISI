@@ -28,4 +28,3 @@ The Resources sheet has been updated. Go through the React crash course for a be
 - A modal component should be used to display or capture form data for the View/Add/Update operations.
 - Do not show password fields for View/Update operations.
 - Users should be able to upload an image file (maximum size 500 KB) during Add/Update operation. The image should be visible during View operation. In case the image is not available show an appropriate message.
-- 
